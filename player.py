@@ -2,7 +2,7 @@ from youtube_search import YoutubeSearch
 from constants import ydl
 from os import listdir, system, name
 from playsound import playsound
-import config
+import config, multiprocessing
 def clear():
     if name == "nt":
         system("cls")
@@ -38,4 +38,7 @@ elif action == "2":
     playsound(f"{config.mp3_dest}/{songs[num]}")
 elif action == "3":
     for song in listdir(config.mp3_dest):
-        playsound(f"{config.mp3_dest}/{song}")
+        p = multiprocessing.Process(target=playsound, args=(f"{config.mp3_dest}/{song}", ))
+        p.start()
+        soundaction = input("press enter to skip")
+        p.terminate()
