@@ -1,0 +1,5 @@
+how to use this
+1. make sure you have python 3.9.1 installed
+2. install these dependencies via pip: youtube_search, playsound, youtube_dl
+3. run player.py
+4. enjoy
