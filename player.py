@@ -1,3 +1,4 @@
+import json
 from youtube_search import YoutubeSearch
 from constants import ydl
 from os import listdir, system, name
@@ -26,6 +27,7 @@ What do you want to do?
 (1) Download a song
 (2) Play a song
 (3) Play all songs
+(4) Play a playlist
 """)
 if action == "1":
     #take query from user
@@ -50,4 +52,12 @@ elif action == "2":
 elif action == "3":
     for song in listdir(config.mp3_dest):
         playSong(f"{config.mp3_dest}/{song}")
-        
+elif action == "4":
+    playlistfile = open("playlists.json", )
+    playlists = dict(json.load(playlistfile))
+    for i in range(len(list(playlists.keys()))):
+        print(f"({i + 1}) {list(playlists.keys())[i]}")
+    chosen = int(input("which playlist do you wanna play"))
+    playlist = playlists[list(playlists.keys())[chosen - 1]] 
+    for song in playlist:
+        playSong(f"{config.mp3_dest}/{song}")
