@@ -1,8 +1,9 @@
 from youtube_search import YoutubeSearch
 from constants import ydl
 from os import listdir, system, name
-from playsound import playsound
-import config, multiprocessing
+from time import sleep
+import config
+import vlc
 def clear():
     if name == "nt":
         system("cls")
@@ -14,7 +15,11 @@ def search(query):
     return YoutubeSearch(query, max_results=10).to_dict()
 def idToYtURL(id):
     return "https://www.youtube.com/watch?v=" + id
-
+def playSong(path):
+    p = vlc.MediaPlayer(path)
+    p.play()
+    sleep(0.1)
+    sleep(p.get_length() // 1000 - 0.1)
 action = input(
 """
 What do you want to do?
@@ -41,13 +46,8 @@ elif action == "2":
         print(f"({i + 1}): {songs[i].split('.mp3')[0]}")
     num = int(input("which one do you want to play?\n")) - 1
     #play the users chosen song as a thread
-    p = multiprocessing.Process(target=playsound, args=(f"{config.mp3_dest}/{songs[num]}", ))
-    p.start()
-    input("press enter to stop the song")
-    p.terminate()
+    playSong(f"{config.mp3_dest}/{songs[num]}")
 elif action == "3":
     for song in listdir(config.mp3_dest):
-        p = multiprocessing.Process(target=playsound, args=(f"{config.mp3_dest}/{song}", ))
-        p.start()
-        soundaction = input("press enter to skip")
-        p.terminate()
+        playSong(f"{config.mp3_dest}/{song}")
+        
