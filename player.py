@@ -5,6 +5,7 @@ from os import listdir, system, name
 from time import sleep
 import config
 import vlc
+
 def clear():
     if name == "nt":
         system("cls")
@@ -12,15 +13,19 @@ def clear():
         system("clear")
 def downloadMP3(path):
     ydl.extract_info(path)
+
 def search(query):
     return YoutubeSearch(query, max_results=10).to_dict()
+
 def idToYtURL(id):
     return "https://www.youtube.com/watch?v=" + id
+
 def playSong(path):
     p = vlc.MediaPlayer(path)
     p.play()
     sleep(0.1)
     sleep(p.get_length() // 1000 - 0.1)
+
 action = input(
 """
 What do you want to do?
@@ -29,6 +34,7 @@ What do you want to do?
 (3) Play all songs
 (4) Play a playlist
 """)
+
 if action == "1":
     #take query from user
     searchquery = input("input a query\n")
@@ -40,6 +46,7 @@ if action == "1":
     #take one song and download it
     num = int(input("which one do you want to download?\n")) - 1
     downloadMP3(idToYtURL(results[num]["id"]))
+
 elif action == "2":
     #get all files in the music folder
     songs = listdir(config.mp3_dest)
@@ -49,9 +56,11 @@ elif action == "2":
     num = int(input("which one do you want to play?\n")) - 1
     #play the users chosen song as a thread
     playSong(f"{config.mp3_dest}/{songs[num]}")
+
 elif action == "3":
     for song in listdir(config.mp3_dest):
         playSong(f"{config.mp3_dest}/{song}")
+
 elif action == "4":
     playlistfile = open("playlists.json", )
     playlists = dict(json.load(playlistfile))
